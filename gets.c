@@ -6,7 +6,7 @@
  * @s: string
  * Return: byte number
  */
-int gets(char *s)
+int _gets(char *s)
 {
 	int cnt = 0;
 
