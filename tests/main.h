@@ -11,12 +11,18 @@ int _putchar(char *buffer, char s);
 /* Helper function prototypes */
 
 /* Specifier verification */
-int (*confirm_format(const char *format, va_list args, char*buffer));
+int (*confirm_format(const char *s))();
 
-typedef struct {
+/**
+ * struct pf_specifier - Structure for specifiers
+ * @s: String to compare
+ * @f: Function to execute
+ */
+typedef struct ps_specifier
+{
 	char *s;
-	int (*f)(va_list args, char *buffer);
-}format_info_t;
+	int (*f)();
+}ps_s;
 
 /*function buffer*/
 void print_buffer(char *buffer, int size);
@@ -25,6 +31,7 @@ int buffer_pos(char *buffer);
 char *init_buffer();
 int add_buffer(char *buffer, char s);
 char *flush_buffer(char *buffer);
+
 /*00function psecifiers*/
 int print_custom_percent(char *s, char *buffer);
 int print_custom_char(va_list args, char *buffer);

@@ -9,7 +9,7 @@
  */
 int print_custom_char(va_list args, char *buffer)
 {
-	char c = va_args(args, int);
+	char c = va_arg(args, int);
 
 	if (c == '\0')
 	{
@@ -35,23 +35,21 @@ int print_custom_string(va_list args, char *buffer)
 	if (str)
 	{
 		len = strlen(str);
-		while (i < len)
+		for (; i < len; i++)
 		{
 			_putchar(buffer, *(str + i));
-			i++;
 		}
 	}
 	else
 	{
-		len = 7;
-		str = "(empty)";
-		while (i < len)
+		len = 6;
+		str = "(null)";
+		for (; i < len; i++)
 		{
 			_putchar(buffer, *(str + i));
 		}
 	}
 	return (len);
-	}
 }
 /**
  * print_custom_percent - Prints percent symbol

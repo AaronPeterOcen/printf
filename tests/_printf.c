@@ -30,20 +30,46 @@ int condition(const char *format)
  */
 int _printf(const char *format, ...)
 {
-	va_list args;
-	char buffer[1024];
-	int count = 0;
+	int totnum = 0;
+	const char *p;
+	int (*f)();
+	char *buffer = init_buffer();
+	va_list list;
 
-	if (!format)
+	va_start(list, format);
+	if (!buffer)
+		return (0);
+	if (condition(format))
+	{
+		free(buffer);
 		return (-1);
-
-	va_start(args, format);
-
-	count = confirm_format(format, args, buffer);
-
-	va_end(args);
-
-	write(1, buffer, count);
-
-	return (count);
+	}
+	p = format;
+	while (*p)
+	{
+		if (*p == '%')
+		{
+			f = confirm_format(p);
+			if (f)
+			{
+				totnum += f(list, buffer);
+				p++;
+			}
+			else
+			{
+				_putchar(buffer, *p);
+				totnum++;
+			}
+		}
+		else
+		{
+			_putchar(buffer, *p);
+			totnum++;
+		}
+		p++;
+	}
+	va_end(list);
+	print_buffer(buffer, buffer_pos(buffer));
+	free(buffer);
+	return (totnum);
 }

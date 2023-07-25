@@ -65,7 +65,7 @@ void print_buffer(char *buffer, int size)
 	write(1, buffer, size);
 }
 /**
- * buffer_position - Position of the buffer
+ * buffer_pos - Position of the buffer
  * Description: Function to know the length of the buffer
  * @buffer: Buffer to find the length
  * Return: Length of the buffer
