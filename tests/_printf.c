@@ -1,75 +1,44 @@
+#include <stdarg.h>
+#include <unistd.h>
 #include "main.h"
 
-/**
- * condition - Checks if the format string is empty,
- * or contains only a single '%'.
- * @format: The format string to check.
- * Return: 1 if the format is empty or contains only a single '%',
- * 0 otherwise.
- */
-int condition(const char *format)
-{
-	if (format == NULL)
-	{
-		return (1);
-	}
-	if (*format == '%')
-	{
-		if (*(format + 1) == '\0')
-		{
-			return (1);
-		}
-	}
-	return (0);
-}
-/**
- * _printf - Printf function copy
- * Description: This is a modified version of printf
- * @format: String to print
- * Return: Number of characters printed
- */
 int _printf(const char *format, ...)
 {
-	int totnum = 0;
-	const char *p;
-	int (*f)();
-	char *buffer = init_buffer();
-	va_list list;
+	va_list args;
+	int i = 0, c = 0, n = 0;
 
-	va_start(list, format);
-	if (!buffer)
-		return (0);
-	if (condition(format))
-	{
-		free(buffer);
+	if (!format || (format[i] == '%' && format[i + 1] == '\0'))
 		return (-1);
-	}
-	p = format;
-	while (*p)
+	va_start(args, format);
+	while (format[i] != '\0')
 	{
-		if (*p == '%')
-		{
-			f = confirm_format(p);
-			if (f)
-			{
-				totnum += f(list, buffer);
-				p++;
-			}
-			else
-			{
-				_putchar(buffer, *p);
-				totnum++;
-			}
-		}
+		if (format[i] != '%')
+			write(1, &format[i], 1), n++;
 		else
 		{
-			_putchar(buffer, *p);
-			totnum++;
+			switch (format[i + 1])
+			{
+			case 'c':
+				c = va_arg(args, int), write(1, &c, 1), n++, i++;
+				break;
+			case 's':
+				{
+					char *s = va_arg(args, char *);
+					while (s[c] != '\0')
+						write(1, &s[c++], 1), n++;
+					c = 0, i++;
+					break;
+				}
+			case '%':
+				write(1, &format[i], 1), n++, i++;
+				break;
+			default:
+				write(1, &format[i], 1), n++;
+			}
 		}
-		p++;
+		i++;
 	}
-	va_end(list);
-	print_buffer(buffer, buffer_pos(buffer));
-	free(buffer);
-	return (totnum);
+	va_end(args);
+	return (n);
 }
+
