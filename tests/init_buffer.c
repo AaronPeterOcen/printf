@@ -25,10 +25,10 @@ int add_buffer(char *buffer, char s)
 {
 	int a;
 
-	a = buffer_position(buffer);
+	a = buffer_pos(buffer);
 
-	if (i < 1023)
-		*(buffer + i) = s;
+	if (a < 1023)
+		*(buffer + a) = s;
 	else
 	{
 		print_buffer(buffer, 1023);
@@ -70,12 +70,12 @@ void print_buffer(char *buffer, int size)
  * @buffer: Buffer to find the length
  * Return: Length of the buffer
  */
-int buffer_position(char *buffer)
+int buffer_pos(char *buffer)
 {
-	int post = 0;
+	int pos = 0;
 	char *p = buffer;
 
-	for (; (*(p + post) != '\0'); post++)
+	for (; (*(p + pos) != '\0'); pos++)
 		;
-	return (post);
+	return (pos);
 }

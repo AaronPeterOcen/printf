@@ -8,5 +8,5 @@
  */
 int _putchar(char *buffer, char s)
 {
-	return (buffer_add(buffer, s));
+	return (add_buffer(buffer, s));
 }
