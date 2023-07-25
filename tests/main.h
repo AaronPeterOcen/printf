@@ -7,7 +7,7 @@
 /*printf func*/
 int _printf(const char *format, ...);
 int _puts(char c);
-int  gets(char *s);
+int  _gets(char *s);
 
 
 /*00function psecifiers*/
