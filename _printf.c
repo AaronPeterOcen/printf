@@ -4,38 +4,41 @@
 
 int _printf(const char *format, ...)
 {
-	unsigned int i = 0, str_c;
-	unsigned int totnum = 0;
-	va_list list;
+	va_list args;
+	int i = 0, c = 0, n = 0;
 
 	if (!format || (format[i] == '%' && format[i + 1] == '\0'))
 		return (-1);
-	va_start(list, format);
+	va_start(args, format);
 	while (format[i] != '\0')
 	{
 		if (format[i] != '%')
+			write(1, &format[i], 1), n++;
+		else
 		{
-			_puts(format[i]);
+			switch (format[i + 1])
+			{
+			case 'c':
+				c = va_arg(args, int), write(1, &c, 1), n++, i++;
+				break;
+			case 's':
+				{
+					char *s = va_arg(args, char *);
+					while (s[c] != '\0')
+						write(1, &s[c++], 1), n++;
+					c = 0, i++;
+					break;
+				}
+			case '%':
+				write(1, &format[i], 1), n++, i++;
+				break;
+			default:
+				write(1, &format[i], 1), n++;
+			}
 		}
-		else if (format[i + 1] == 'c')
-		{
-			_puts(va_arg(list, int));
-			i++;
-		}
-		else if (format[i + 1] ==  's')
-		{
-			str_c = _gets(va_arg(list, char *));
-			i++;
-			totnum += (str_c - 1);
-		}
-		else if (format[i + 1] == '%')
-		{
-			_puts('%');
-		}
-		totnum++;
 		i++;
 	}
-	va_end(list);
-	return (totnum);
+	va_end(args);
+	return (n);
 }
 
