@@ -1,41 +1,45 @@
-#include <stdarg.h>
-#include <unistd.h>
 #include "main.h"
+
+/**
+ * _printf - print the formated text
+ *
+ * @format: format specifier
+ * Return: returns number of byte
+ */
 
 int _printf(const char *format, ...)
 {
-	unsigned int i = 0, str_c;
-	unsigned int totnum = 0;
-	va_list list;
+	unsigned int i, str_count, printed_chars = 0;
 
-	if (!format || (format[i] == '%' && format[i + 1] == '\0'))
-		return (-1);
-	va_start(list, format);
-	while (format[i] != '\0')
+	va_list args;
+
+	va_start(args, format);
+
+	for (i = 0; format[i] != '\0'; i++)
 	{
 		if (format[i] != '%')
 		{
-			_puts(format[i]);
+			_myputchr(format[i]);
 		}
 		else if (format[i + 1] == 'c')
 		{
-			_puts(va_arg(list, int));
+			_myputchr(va_arg(args, int));
 			i++;
 		}
-		else if (format[i + 1] ==  's')
+		else if (format[i + 1] == 's')
 		{
-			str_c = _gets(va_arg(list, char *));
+			str_count = _myputs(va_arg(args, char *));
 			i++;
-			totnum += (str_c - 1);
+			printed_chars += (str_count - 1);
 		}
 		else if (format[i + 1] == '%')
 		{
-			_puts('%');
+			_myputchr('%');
 		}
-		totnum++;
-		i++;
-	}
-	va_end(list);
-	return (totnum);
-}
 
+		printed_chars += 1;
+	}
+
+	va_end(args);
+	return (printed_chars);
+}

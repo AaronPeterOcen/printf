@@ -1,44 +1,45 @@
-#include <stdarg.h>
-#include <unistd.h>
 #include "main.h"
+
+/**
+ * _printf - print the formated text
+ *
+ * @format: format specifier
+ * Return: returns number of byte
+ */
 
 int _printf(const char *format, ...)
 {
-	va_list args;
-	int i = 0, c = 0, n = 0;
+	unsigned int i, str_count, printed_chars = 0;
 
-	if (!format || (format[i] == '%' && format[i + 1] == '\0'))
-		return (-1);
+	va_list args;
+
 	va_start(args, format);
-	while (format[i] != '\0')
+
+	for (i = 0; format[i] != '\0'; i++)
 	{
 		if (format[i] != '%')
-			write(1, &format[i], 1), n++;
-		else
 		{
-			switch (format[i + 1])
-			{
-			case 'c':
-				c = va_arg(args, int), write(1, &c, 1), n++, i++;
-				break;
-			case 's':
-				{
-					char *s = va_arg(args, char *);
-					while (s[c] != '\0')
-						write(1, &s[c++], 1), n++;
-					c = 0, i++;
-					break;
-				}
-			case '%':
-				write(1, &format[i], 1), n++, i++;
-				break;
-			default:
-				write(1, &format[i], 1), n++;
-			}
+			_myputchr(format[i]);
 		}
-		i++;
-	}
-	va_end(args);
-	return (n);
-}
+		else if (format[i + 1] == 'c')
+		{
+			_myputchr(va_arg(args, int));
+			i++;
+		}
+		else if (format[i + 1] == 's')
+		{
+			str_count = _myputs(va_arg(args, char *));
+			i++;
+			printed_chars += (str_count - 1);
+		}
+		else if (format[i + 1] == '%')
+		{
+			_myputchr('%');
+		}
 
+		printed_chars += 1;
+	}
+
+	va_end(args);
+	return (printed_chars);
+}
