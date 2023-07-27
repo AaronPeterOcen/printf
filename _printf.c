@@ -13,6 +13,8 @@ int _printf(const char *format, ...)
 	va_list args;
 	int i = 0, n = 0;
 	char *s;
+	char buffer[1024];
+	int buf_index = 0;
 
 	if (!format)
 		return (-1);
@@ -22,7 +24,7 @@ int _printf(const char *format, ...)
 	{
 		if (format[i] != '%')
 		{
-			write(1, &format[i], 1);
+			buffer[buf_index++] = format[i];
 			n++;
 		}
 		else
@@ -30,9 +32,9 @@ int _printf(const char *format, ...)
 			if (format[i + 1] == '\0')
 				break;
 
-			if (format[i + 1] == '%')
+			if (format[i + 1] == '%') 
 			{
-				write(1, &format[i], 1);
+				buffer[buf_index++] = '%';
 				n++;
 				i++;
 			}
@@ -44,7 +46,7 @@ int _printf(const char *format, ...)
 					i++;
 					{
 						char c = va_arg(args, int);
-						write(1, &c, 1);
+						buffer[buf_index++] = c;
 						n++;
 					}
 					break;
@@ -54,14 +56,14 @@ int _printf(const char *format, ...)
 						s = "(null)";
 					while (*s != '\0')
 					{
-						write(1, s, 1);
+						buffer[buf_index++] = *s;
 						s++;
 						n++;
 					}
 					i++;
 					break;
 				default:
-					write(1, &format[i], 1);
+					buffer[buf_index++] = format[i];
 					n++;
 				}
 			}
@@ -69,5 +71,8 @@ int _printf(const char *format, ...)
 		i++;
 	}
 	va_end(args);
+
+	write(1, buffer, buf_index);
+
 	return (n);
 }
