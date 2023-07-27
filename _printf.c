@@ -20,14 +20,14 @@ int _printf(const char *format, ...)
 	while (format[i] != '\0')
 	{
 		if (format[i] != '%')
-		{
-			write(1, &format[i], 1), n++;
+		{ write(1, &format[i], 1), n++;
 		}
 		else
 		{
 			switch (format[i + 1])
 			{ case 'c':
-				c = va_arg(args, int), write(1, &c, 1), n++, i++;
+				c = va_arg(args, int);
+				write(1, &c, 1), n++, i++;
 				break;
 			case 's':
 				{ char *s = va_arg(args, char *);
@@ -51,3 +51,4 @@ int _printf(const char *format, ...)
 	va_end(args);
 	return (n);
 }
+
