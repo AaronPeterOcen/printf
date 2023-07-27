@@ -9,44 +9,64 @@
  */
 
 int _printf(const char *format, ...)
-{ va_list args;
+{
+	va_list args;
 	int i = 0, n = 0;
 	char *s;
 
 	if (!format)
 		return (-1);
+
 	va_start(args, format);
 	while (format[i] != '\0')
 	{
 		if (format[i] != '%')
-		{ write(1, &format[i], 1), n++;
+		{
+			write(1, &format[i], 1);
+			n++;
 		}
 		else
 		{
 			if (format[i + 1] == '\0')
 				break;
-			switch (format[i + 1])
-			{ case 'c':
-				i++;
-				{ char c = va_arg(args, int);
-					write(1, &c, 1), n++;
-				} break;
-			case 's':
-				s = va_arg(args, char *);
 
-				if (s == NULL)
-					s = "(null)";
-				while (*s != '\0')
-				{ write(1, s, 1), s++, n++;
-				} i++;
-				break;
-			case '%':
-				write(1, &format[i], 1), n++;
-				break;
-			default:
-				write(1, &format[i], 1), n++;
+			if (format[i + 1] == '%')
+			{
+				write(1, &format[i], 1);
+				n++;
+				i++;
 			}
-		} i++;
+			else
+			{
+				switch (format[i + 1])
+				{
+				case 'c':
+					i++;
+					{
+						char c = va_arg(args, int);
+						write(1, &c, 1);
+						n++;
+					}
+					break;
+				case 's':
+					s = va_arg(args, char *);
+					if (s == NULL)
+						s = "(null)";
+					while (*s != '\0')
+					{
+						write(1, s, 1);
+						s++;
+						n++;
+					}
+					i++;
+					break;
+				default:
+					write(1, &format[i], 1);
+					n++;
+				}
+			}
+		}
+		i++;
 	}
 	va_end(args);
 	return (n);
