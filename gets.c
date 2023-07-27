@@ -1,7 +1,7 @@
 #include "main.h"
 
 /**
- * gets - print the string
+ * _gets - print the string
  *
  * @s: string
  * Return: byte number

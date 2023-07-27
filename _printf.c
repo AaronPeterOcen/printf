@@ -2,6 +2,12 @@
 #include <unistd.h>
 #include "main.h"
 
+/**
+ * _printf - Prints out the string format
+ * @format: character string
+ * Return: returns the number of chars
+ */
+
 int _printf(const char *format, ...)
 {
 	va_list args;
@@ -9,23 +15,28 @@ int _printf(const char *format, ...)
 
 	if (!format || (format[i] == '%' && format[i + 1] == '\0'))
 		return (-1);
+
 	va_start(args, format);
 	while (format[i] != '\0')
 	{
 		if (format[i] != '%')
+		{
 			write(1, &format[i], 1), n++;
+		}
 		else
 		{
 			switch (format[i + 1])
-			{
-			case 'c':
+			{ case 'c':
 				c = va_arg(args, int), write(1, &c, 1), n++, i++;
 				break;
 			case 's':
-				{
-					char *s = va_arg(args, char *);
+				{ char *s = va_arg(args, char *);
+
+					if (s == NULL)
+						s = "(null)";
 					while (s[c] != '\0')
-						write(1, &s[c++], 1), n++;
+					{ write(1, &s[c++], 1), n++;
+					}
 					c = 0, i++;
 					break;
 				}
@@ -35,10 +46,8 @@ int _printf(const char *format, ...)
 			default:
 				write(1, &format[i], 1), n++;
 			}
-		}
-		i++;
+		} i++;
 	}
 	va_end(args);
 	return (n);
 }
-
