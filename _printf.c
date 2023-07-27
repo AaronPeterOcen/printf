@@ -40,7 +40,8 @@ int _printf(const char *format, ...)
 				} i++;
 				break;
 			case '%':
-				_puts('%');
+				i++;
+				write(1, &format[i], 1), n++;
 				break;
 			default:
 				write(1, &format[i], 1), n++;
