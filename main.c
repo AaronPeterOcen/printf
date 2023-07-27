@@ -26,6 +26,9 @@ int main(void)
 
 	_printf("css%ccs%scscscs", 'T', "Test");
 	printf("css%ccs%scscscs", 'T', "Test");
+
+	_printf("%");
+	printf("%");
 	
 	return (0);
 }
