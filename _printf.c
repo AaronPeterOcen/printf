@@ -9,7 +9,8 @@
  */
 
 int _printf(const char *format, ...)
-{ va_list args;
+{
+	va_list args;
 	int i = 0, n = 0;
 	char *s;
 
